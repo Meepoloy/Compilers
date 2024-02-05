@@ -113,10 +113,7 @@ BufferPointer readerCreate(weaver_intg size, weaver_intg increment, weaver_intg 
 	readerPointer->size = size;
 	readerPointer->increment = increment;
 	readerPointer->mode = mode;
-	/* TO_DO: Initialize flags */
-	/*check this out*/
-	readerPointer->flags = READER_DEFAULT_FLAG;
-
+	/* TO_DO: Initialize flags */ 	
 	/* TO_DO: The created flag must be signalized as EMP */
 	readerPointer->flags = READER_EMPTY_FLAG;
 	/* NEW: Cleaning the content */
@@ -154,7 +151,7 @@ BufferPointer readerAddChar(BufferPointer const readerPointer, weaver_char ch) {
 	if (ch == NULL)
 		return NULL;
 	/* TO_DO: Reset Realocation */
-	readerPointer->content = (weaver_string*)malloc(readerPointer->size);
+	// readerPointer->content = (weaver_string*)malloc(readerPointer->size);
 	/* TO_DO: Test the inclusion of chars */
 	if (readerPointer->position.wrte * (weaver_intg)sizeof(weaver_char) < readerPointer->size) {
 		/* TO_DO: This buffer is NOT full */
@@ -174,7 +171,10 @@ BufferPointer readerAddChar(BufferPointer const readerPointer, weaver_char ch) {
 			break;
 		case MODE_MULTI:
 			/* TO_DO: Adjust new size */
+			if (!readerPointer->size) readerPointer->size = READER_DEFAULT_SIZE;
 			/* TO_DO: Defensive programming */
+			newSize = readerPointer->size * readerPointer->increment;
+readerPointer->size = newSize;
 			break;
 		default:
 			return NULL;
@@ -272,13 +272,11 @@ weaver_boln readerFree(BufferPointer const readerPointer) {
 */
 weaver_boln readerIsFull(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
+	if (!readerPointer)
 		return WEAVER_FALSE;
-	}
 	/* TO_DO: Check flag if buffer is FUL */
-	if (readerPointer->flags == READER_FULL_FLAG) {
+	if (readerPointer->flags == READER_FULL_FLAG)
 		return WEAVER_TRUE;
-	}
 	return WEAVER_FALSE;
 }
 
@@ -399,6 +397,9 @@ weaver_intg readerLoad(BufferPointer const readerPointer, FILE* const fileDescri
 		size++;
 	}
 	/* TO_DO: Defensive programming */
+	if (size < 0)
+		return 0;
+	
 	return size;
 }
 
@@ -423,7 +424,7 @@ weaver_boln readerRecover(BufferPointer const readerPointer) {
 		return WEAVER_FALSE;
 	/* TO_DO: Recover positions */
 	readerPointer->position.read = 0;
-	readerPointer->position.mark--;
+	readerPointer->position.mark = 0;
 
 	return WEAVER_TRUE;
 }
@@ -676,7 +677,8 @@ weaver_intg readerGetInc(BufferPointer const readerPointer) {
 */
 weaver_intg readerGetMode(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) return READER_ERROR;
+	if (!readerPointer)
+		return READER_ERROR;
 	/* TO_DO: Return mode */
 
 	return readerPointer->mode;
@@ -699,9 +701,8 @@ weaver_intg readerGetMode(BufferPointer const readerPointer) {
 */
 weaver_byte readerGetFlags(BufferPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (readerPointer == NULL) {
+	if (readerPointer == NULL)
 		return READER_DEFAULT_FLAG;
-	}
 	/* TO_DO: Return flags */
 	return readerPointer->flags;
 }
@@ -728,7 +729,7 @@ weaver_void readerPrintStat(BufferPointer const readerPointer) {
 	/* TO_DO: Print the histogram */
 	for (int i = 0; i < readerPointer->size; i++) {
 		//printf()
-		printf("%c", readerPointer->histogram[i]);
+		printf("%d", readerPointer->histogram[i]);
 	} 
 }
 
