@@ -1,0 +1,26 @@
+# ninja log v5
+5	14	0	clean	8c45b54705a541e8
+16	291	7277808280711291	CMakeFiles/Compiler.dir/Reader.c.obj	628f0d15cd746131
+11	293	7277808280711291	CMakeFiles/Compiler.dir/Compilers.c.obj	d7cdd4b3d63f3959
+20	294	7277808280711291	CMakeFiles/Compiler.dir/MainReader.c.obj	12b379c7428fa449
+294	607	7277808283659370	Compiler.exe	7278bd7a32640465
+8	17	0	clean	8c45b54705a541e8
+13	556	7277820640473496	CMakeFiles/WeaverCompiler.dir/Reader.c.obj	20208ad59bb43ab9
+8	557	7277820640483497	CMakeFiles/WeaverCompiler.dir/Compilers.c.obj	818b29c567b113de
+17	557	7277820640483497	CMakeFiles/WeaverCompiler.dir/MainReader.c.obj	2521c843478d0345
+558	887	7277820643604361	WeaverCompiler.exe	f6784dbf3e33a590
+3	11	0	clean	8c45b54705a541e8
+8	269	7277825447712949	CMakeFiles/WeaverCompiler.dir/MainReader.c.obj	2521c843478d0345
+2	270	7277825447712949	CMakeFiles/WeaverCompiler.dir/Compilers.c.obj	818b29c567b113de
+5	270	7277825447722843	CMakeFiles/WeaverCompiler.dir/Reader.c.obj	20208ad59bb43ab9
+271	426	7277825448944177	WeaverCompiler.exe	f6784dbf3e33a590
+33	45	0	clean	8c45b54705a541e8
+10	291	7286432196607359	CMakeFiles/WeaverCompiler.dir/Compilers.c.obj	818b29c567b113de
+20	292	7286432196617368	CMakeFiles/WeaverCompiler.dir/MainReader.c.obj	2521c843478d0345
+15	293	7286432196617368	CMakeFiles/WeaverCompiler.dir/Reader.c.obj	20208ad59bb43ab9
+293	491	7286432198193952	WeaverCompiler.exe	f6784dbf3e33a590
+36	45	0	clean	8c45b54705a541e8
+13	385	7288030564434317	CMakeFiles/WeaverCompiler.dir/Reader.c.obj	20208ad59bb43ab9
+16	386	7288030564434317	CMakeFiles/WeaverCompiler.dir/MainReader.c.obj	2521c843478d0345
+8	386	7288030564434317	CMakeFiles/WeaverCompiler.dir/Compilers.c.obj	818b29c567b113de
+386	607	7288030566058314	WeaverCompiler.exe	f6784dbf3e33a590

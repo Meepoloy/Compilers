@@ -1,0 +1,3 @@
+C:/Users/godsw/Documents/SchoolStuffs/Level5/Compilers/A12/a1files/code/out/build/x64-Debug/CMakeFiles/WeaverCompiler.dir
+C:/Users/godsw/Documents/SchoolStuffs/Level5/Compilers/A12/a1files/code/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/godsw/Documents/SchoolStuffs/Level5/Compilers/A12/a1files/code/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
