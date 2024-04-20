@@ -84,7 +84,7 @@ enum TOKENS {
 	LPR_T,		/*  4: Left parenthesis token */
 	RPR_T,		/*  5: Right parenthesis token */
 	FLT_T,		/*  6: Float literal token */
-	//RBR_T,		/*  7: Right brace token */
+	//COL_T,		/*  7: Colon token */
 	KW_T,		/*  8: Keyword token */
 	EOS_T,		/*  9: End of function (colon) */
 	RTE_T,		/* 10: Run-time error token */
@@ -156,7 +156,7 @@ typedef struct scannerData {
 
 /* EOF definitions */
 #define CHARSEOF0 '\0'
-#define CHARSEOF255 0xFF
+#define CHARSEOF255 0xFFFFFFFFFFFFFFCD
 
 /*  Special case tokens processed separately one by one in the token-driven part of the scanner:
  *  LPR_T, RPR_T, LBR_T, RBR_T, EOS_T, SEOF_T and special chars used for tokenis include _, & and ' */
@@ -178,12 +178,12 @@ typedef struct scannerData {
 #define COMM_SYM '#'
 
 /* TO_DO: Error states and illegal state */
-#define ESNR	15		/* Error state with no retract */
-#define ESWR	16		/* Error state with retract */
-#define FS		17		/* Illegal state */
+#define ESNR	16		/* Error state with no retract */
+#define ESWR	17		/* Error state with retract */
+#define FS		18		/* Illegal state */
 
  /* TO_DO: State transition table definition */
-#define NUM_STATES		17
+#define NUM_STATES		18
 #define CHAR_CLASSES	12
 
 /* TO_DO: Transition table - type of states defined in separate table */
@@ -196,7 +196,7 @@ static weaver_intg transitionTable[NUM_STATES][CHAR_CLASSES] = {
 	{     3,    3,    3,    4,    3,    3,    3,    3,    3,    3,    3,    3},	// S3: NOAS
 	{  ESNR, ESNR,    5, ESNR, ESNR, ESWR, ESNR, ESNR, ESNR, ESNR, ESNR, ESNR},	// S4: NOAS
 	{    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS},	// S5: ASNR (multi-line comment)
-	{     6,    7,    8,    8,    8,    8,	  8,    8,    8,    8,    7,    8},	// S6: ASNR (key)
+	{     6,    7,    7,    7,    7,   15,	 15,   15,    7,    7,    7,    7},	// S6: NOAS 
 	{     7,    7,    8,    8,    8,    8,    8,    8,    8,    8,    7,    8},	// S7: NOAS
 	{    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS},	// S8: ASWR (variable name or method name)
 	{    10,    9,   10,   10,   10,   10,	 10,   10,   11,   10,   10,   10},	// S9: NOAS
@@ -204,7 +204,8 @@ static weaver_intg transitionTable[NUM_STATES][CHAR_CLASSES] = {
 	{    12,   11,   12,   12,   12,   12,	 12,   12,   12,   12,   12,   12},	// S11: NOAS
 	{    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS},	// S12: ASWR (FL)
 	{    13,   13,   13,   13,   14,   13,	 13,   13,   13,   13,   13,   13},	// S13: NOAS
-	{    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS}  // S14: ASWR (SL)
+	{    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS},  // S14: ASWR (SL)
+	{    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS}  // S15: ASWR (key)
 };
 
 /* Define accepting states types */
@@ -220,7 +221,7 @@ static weaver_intg stateType[NUM_STATES] = {
 	NOFS, /* 03 */
 	NOFS, /* 04 */
 	FSNR, /* 05 */
-	FSNR, /* 06 */
+	NOFS, /* 06 */
 	NOFS, /* 07 */
 	FSWR, /* 08 */
 	NOFS, /* 09 */
@@ -229,8 +230,9 @@ static weaver_intg stateType[NUM_STATES] = {
 	FSWR, /* 12 */
 	NOFS, /* 13 */
 	FSWR, /* 14 */
-	FSNR, /* 15 (Err1 - no retract) */
-	FSWR  /* 16 (Err2 - retract) */
+	FSWR, /* 15 comment addition*/
+	FSNR, /* 16 (Err1 - no retract) */
+	FSWR  /* 17 (Err2 - retract) */
 };
 
 /*
@@ -277,7 +279,7 @@ static PTR_ACCFUN finalStateTable[NUM_STATES] = {
 	NULL,		/* -			[03] */
 	NULL,		/* -			[04] */
 	funcCMT,	/* COM-SL		[05] */
-	funcKEY,	/* KEY			[06] */
+	NULL,	/* KEY			[06] */
 	NULL,		/* -			[07] */
 	funcID,		/* MNID/VARID	[08] */
 	NULL,		/* -			[09] */
@@ -286,6 +288,7 @@ static PTR_ACCFUN finalStateTable[NUM_STATES] = {
 	funcIL,		/* FL			[12] */
 	NULL,		/* -			[13] */
 	funcSL,		/* SL			[14] */
+	funcKEY,	/* KEY			[15] */
 	funcErr,	/* ERR1 [06] */
 	funcErr		/* ERR2 [07] */
 };
@@ -301,10 +304,10 @@ Language keywords
 
 /* TO_DO: Define the list of keywords */
 static weaver_string keywordTable[KWT_SIZE] = {
-	"data",		/* KW00 */
-	"code",		/* KW01 */
+	"def",		/* KW00 */
+	"data",		/* KW01 */
 	"int",		/* KW02 */
-	"real",		/* KW03 */
+	"float",	/* KW03 */
 	"string",	/* KW04 */
 	"if",		/* KW05 */
 	"then",		/* KW06 */

@@ -388,7 +388,7 @@ weaver_intg readerLoad(BufferPointer const readerPointer, FILE* const fileDescri
 	if (readerPointer == NULL || fileDescriptor == NULL)
 		return READER_ERROR;
 	c = (weaver_char)fgetc(fileDescriptor);
-	while (!feof(fileDescriptor)) {
+	while (!feof(fileDescriptor)) {  //Theres a problem here
 		if (!readerAddChar(readerPointer, c)) {
 			ungetc(c, fileDescriptor);
 			return READER_ERROR;
@@ -537,7 +537,7 @@ weaver_string readerGetContent(BufferPointer const readerPointer, weaver_intg po
 	if (pos < 0)
 		return NULL;
 	/* TO_DO: Return content (string) */
-	return readerPointer->content + pos;;
+	return readerPointer->content +pos; // (readerPointer->size-2)
 }
 
 

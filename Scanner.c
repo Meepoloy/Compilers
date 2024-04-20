@@ -205,17 +205,20 @@ Token tokenizer(weaver_void) {
 			//if(newc != '^'){
 				do {
 					c = readerGetChar(sourceBuffer);
-					if (c == CHARSEOF0 || c == CHARSEOF255) {
-						readerRetract(sourceBuffer);
+					if (c == '\n') {
+						//readerRetract(sourceBuffer);
 						//return currentToken;
 					}
-				} while (c != '\n'); 
-			//else {
+				} while (c != '\n');
+				currentToken.code = CMT_T;
+				scData.scanHistogram[currentToken.code]++;
+
+				//else {
 				
 			//}
 			
 			//c != '#' && c != CHARSEOF0 && c != CHARSEOF255);
-			break;
+			return currentToken;
 
 		/* ------------------------------------------------------------------------
 			Part 2: Implementation of Finite State Machine (DFA) or Transition Table driven Scanner

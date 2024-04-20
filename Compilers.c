@@ -103,6 +103,10 @@ weaver_intg main(int argc, char** argv) {
 		printf("%s%c%s", "\n[Option '", PGM_SCANNER, "': Starting SCANNER .....]\n\n");
 		mainScanner(argc, argv);
 		break;
+	case PGM_PARSER:
+		printf("%s%c%s", "\n[Option '", PGM_PARSER, "': Starting PARSER .....]\n\n");
+		mainScanner(argc, argv);
+		break;
 		
 	/* TO_DO: Include later SCANNER (A22) and PARSER (A32) */
 	default:
